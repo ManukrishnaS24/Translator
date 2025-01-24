@@ -9,7 +9,7 @@
 .header {
   min-height: 100vh;
   width: 100%;
-  background-image: linear-gradient(rgba(4,9,30,0.7), rgba(4,9,30,0.7)), url(images/ndm.png);
+  background-color: cyan;
   background-position: center;
   background-size: cover;
   position: relative;
@@ -37,6 +37,17 @@ nav img {
   color: cornsilk;
   text-decoration: none;
   font-size: 23px;
+}
+
+.nav-links ul li a:active::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: red; /* Red underline on click */
+  position: absolute;
+  bottom: -2px;
+  left: 0;
 }
 
 .text-box {
