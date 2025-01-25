@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Translator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header Section -->
+  <div class="header">
+    <nav>
+      <img src="logo.png" alt="Logo" style="width: 150px; height: auto;">
+      <div class="nav-links">
+        <ul>
+          <li><a href="#scan">Scan</a></li>
+          <li><a href="#upload">Upload</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="text-box">
+      <h1>Sign Translator</h1>
+      <p>Translate hand signs into text using advanced AI technology. Use your webcam or upload images for real-time translations.</p>
+      <a href="#scan" class="hero-btn">Get Started</a>
+    </div>
+  </div>
+
+  <!-- Main Content Section -->
+  <div class="course" id="scan">
+    <h1>Live Scanner</h1>
+    <p>Activate your webcam to scan signs in real time.</p>
+    <button id="scan-btn" class="hero-btn1">Start Scanning</button>
+    <div class="video-container">
+      <video id="webcam" autoplay playsinline></video>
+      <canvas id="overlay"></canvas>
+    </div>
+  </div>
+
+  <div class="campus" id="upload">
+    <h1>Upload Image</h1>
+    <p>Upload an image to translate signs into text.</p>
+    <input type="file" id="upload-input" accept="image/*" hidden>
+    <button id="upload-btn" class="hero-btn1">Upload Image</button>
+    <div class="video-container">
+      <canvas id="upload-overlay"></canvas>
+      <img id="uploaded-image" style="display: none;" alt="Uploaded Image" />
+    </div>
+
+    <!-- Output Window -->
+    <div class="output-window" id="output-window" style="display: none; margin-top: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9;">
+      <h2>AI Output</h2>
+      <p id="predicted-letter">Predicted Letter: <span></span></p>
+      <p id="confidence">Confidence: <span></span></p>
+    </div>
+  </div>
+
+  <!-- Footer Section -->
+  <footer class="footer">
+    <p>Sign Translator &copy; 2025 | Powered by AI</p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+  // Upload image functionality
+  const uploadBtn = document.getElementById('upload-btn');
+  const uploadInput = document.getElementById('upload-input');
+  const uploadedImage = document.getElementById('uploaded-image');
+  const outputWindow = document.getElementById('output-window');
+  const predictedLetterElement = document.getElementById('predicted-letter').querySelector('span');
+  const confidenceElement = document.getElementById('confidence').querySelector('span');
+
+  uploadBtn.addEventListener('click', () => {
+    uploadInput.click(); // Trigger the file input click when the button is clicked
+  });
+
+  uploadInput.addEventListener('change', async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      // Display the uploaded image locally
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        uploadedImage.src = e.target.result;
+        uploadedImage.style.display = 'block'; // Show uploaded image
+      };
+      reader.readAsDataURL(file);
+
+      // Send the file to the Flask backend
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const response = await fetch('http://127.0.0.1:5000/upload-image', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to upload image');
+        }
+
+        const result = await response.json();
+
+        // Update the output window
+        predictedLetterElement.textContent = result.predicted_letter;
+        confidenceElement.textContent = `${(result.confidence * 100).toFixed(2)}%`;
+
+        // Show the output window
+        outputWindow.style.display = 'block';
+      } catch (error) {
+        console.error(error);
+        alert('An error occurred while uploading the image.');
+      }
+    }
+  });
+  </script>
+</body>
+</html>
