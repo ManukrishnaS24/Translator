@@ -46,6 +46,13 @@
       <canvas id="upload-overlay"></canvas>
       <img id="uploaded-image" style="display: none;" alt="Uploaded Image" />
     </div>
+
+    <!-- Output Window -->
+    <div id="output-window" style="display: none; margin-top: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9;">
+      <h2>AI Prediction</h2>
+      <p><strong>Predicted Letter:</strong> <span id="predicted-letter"></span></p>
+      <p><strong>Confidence:</strong> <span id="confidence"></span></p>
+    </div>
   </div>
 
   <!-- Footer Section -->
@@ -53,50 +60,58 @@
     <p>Sign Translator &copy; 2025 | Powered by AI</p>
   </footer>
 
-  <script src="script.js"></script>
   <script>
-  // Upload image functionality
-  const uploadBtn = document.getElementById('upload-btn');
-  const uploadInput = document.getElementById('upload-input');
-  const uploadedImage = document.getElementById('uploaded-image');
+    // Upload image functionality
+    const uploadBtn = document.getElementById('upload-btn');
+    const uploadInput = document.getElementById('upload-input');
+    const uploadedImage = document.getElementById('uploaded-image');
+    const outputWindow = document.getElementById('output-window');
+    const predictedLetter = document.getElementById('predicted-letter');
+    const confidence = document.getElementById('confidence');
 
-  uploadBtn.addEventListener('click', () => {
-    uploadInput.click(); // Trigger the file input click when the button is clicked
-  });
+    uploadBtn.addEventListener('click', () => {
+      uploadInput.click(); // Trigger the file input click when the button is clicked
+    });
 
-  uploadInput.addEventListener('change', async (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      // Display the uploaded image locally
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        uploadedImage.src = e.target.result;
-        uploadedImage.style.display = 'block'; // Show uploaded image
-      };
-      reader.readAsDataURL(file);
+    uploadInput.addEventListener('change', async (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        // Display the uploaded image locally
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          uploadedImage.src = e.target.result;
+          uploadedImage.style.display = 'block'; // Show uploaded image
+        };
+        reader.readAsDataURL(file);
 
-      // Send the file to the Flask backend
-      const formData = new FormData();
-      formData.append('file', file);
+        // Send the file to the Flask backend
+        const formData = new FormData();
+        formData.append('file', file);
 
-      try {
-        const response = await fetch('http://127.0.0.1:5000/upload-image', {
-          method: 'POST',
-          body: formData,
-        });
+        try {
+          const response = await fetch('http://127.0.0.1:5000/upload-image', {
+            method: 'POST',
+            body: formData,
+          });
 
-        if (!response.ok) {
-          throw new Error('Failed to upload image');
+          if (!response.ok) {
+            throw new Error('Failed to upload image');
+          }
+
+          const result = await response.json();
+
+          // Update the output window with the AI prediction
+          predictedLetter.textContent = result.predicted_letter;
+          confidence.textContent = `${(result.confidence * 100).toFixed(2)}%`;
+
+          // Show the output window
+          outputWindow.style.display = 'block';
+        } catch (error) {
+          console.error(error);
+          alert('An error occurred while uploading the image.');
         }
-
-        const result = await response.json();
-        alert(`Predicted Letter: ${result.predicted_letter}, Confidence: ${result.confidence}`);
-      } catch (error) {
-        console.error(error);
-        alert('An error occurred while uploading the image.');
       }
-    }
-  });
-</script>
+    });
+  </script>
 </body>
 </html>
