@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload - Sign Translator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="header">
+    <nav>
+      <div class="logo-container">
+        <img src="logo.png" alt="Logo">
+        <span class="logo-text">DRMM</span>
+      </div>
+      <div class="nav-links">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="upload.html" class="nav-btn">Upload</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+  <div class="upload-container">
+    <input type="file" id="upload-input" accept="image/*" hidden>
+    <button id="upload-btn" class="hero-btn1">Upload Image</button>
+    <div class="image-box">
+      <canvas id="upload-overlay"></canvas>
+      <img id="uploaded-image" style="display: none;" alt="Uploaded Image" />
+    </div>
+    <div class="output-popup" id="output-popup" style="display: none;">
+      <h2>Translation</h2>
+      <p id="translation-text"></p>
+      <div id="confidence-score">
+        <p>Confidence: <span id="confidence-value"></span>%</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>Sign Translator &copy; 2025 | Powered by AI</p>
+  </footer>
+
+  <script>
+    // Upload image functionality
+    const uploadBtn = document.getElementById('upload-btn');
+    const uploadInput = document.getElementById('upload-input');
+    const uploadedImage = document.getElementById('uploaded-image');
+    const outputPopup = document.getElementById('output-popup');
+    const translationText = document.getElementById('translation-text');
+    const confidenceValue = document.getElementById('confidence-value');
+
+    uploadBtn.addEventListener('click', () => {
+      uploadInput.click(); // Trigger the file input click when the button is clicked
+    });
+
+    uploadInput.addEventListener('change', async (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        // Display the uploaded image locally
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          uploadedImage.src = e.target.result;
+          uploadedImage.style.display = 'block'; // Show uploaded image
+        };
+        reader.readAsDataURL(file);
+
+        // Simulate AI translation (replace with actual AI call)
+        const translatedText = "This is a sample translation.";
+        const confidenceScore = 85; // Replace with confidence score from AI model
+
+        translationText.textContent = translatedText;
+        confidenceValue.textContent = confidenceScore;
+        outputPopup.style.display = 'block'; // Show output popup
+      }
+    });
+  </script>
+
+</body>
+</html>
