@@ -13,7 +13,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy static files (HTML, CSS, JavaScript, images)
 COPY index.html /app/
-
+COPY style.css /app/  # Copy style.css
 # Expose the port the app will run on
 EXPOSE 5000
 
