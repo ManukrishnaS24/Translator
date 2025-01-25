@@ -1,0 +1,242 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Body Background and Text Color */
+body {
+  background-color: #001f3f; /* Dark blue background */
+  color: #d9ecff; /* Very light blue text */
+}
+
+/* Header Section */
+.header {
+  min-height: 100vh;
+  width: 100%;
+  background-color: #001f3f; /* Match body background */
+  position: relative;
+}
+
+nav {
+  display: flex;
+  padding: 2% 6%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav img {
+  width: 150px;
+}
+
+.nav-links ul li {
+  list-style: none;
+  display: inline-block;
+  padding: 8px 12px;
+  position: relative;
+}
+
+.nav-links ul li a {
+  color: #d9ecff; /* Light blue text */
+  text-decoration: none;
+  font-size: 23px;
+  position: relative;
+}
+
+.nav-links ul li a:active::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: #66b3ff; /* Light blue underline on click */
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+}
+
+.text-box {
+  width: 90%;
+  color: #d9ecff; /* Very light blue text */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.text-box h1 {
+  font-size: 50px;
+  color: #d9ecff; /* Light blue text */
+}
+
+.text-box p {
+  margin: 10px 0 40px;
+  font-size: 24px;
+  line-height: 40px;
+  color: #d9ecff; /* Light blue text */
+}
+
+.hero-btn {
+  display: inline-block;
+  text-decoration: none;
+  color: #d9ecff; /* Light blue text */
+  border: 1px solid #d9ecff; /* Light blue border */
+  padding: 12px 34px;
+  font-size: 13px;
+  background: transparent;
+  position: relative;
+  cursor: pointer;
+  transition: 0.5s ease-in-out;
+}
+
+.hero-btn:hover {
+  background: #004080; /* Slightly lighter dark blue */
+  color: #ffffff; /* White text on hover */
+  border: 1px solid #004080;
+  transform: translateY(-5px); /* Moves the button up */
+}
+
+/* Main Content */
+.course, .campus {
+  width: 80%;
+  margin: auto;
+  text-align: center;
+  padding: 50px 0;
+}
+
+.course h1, .campus h1 {
+  font-size: 40px;
+  color: #d9ecff; /* Light blue for headings */
+}
+
+.course p, .campus p {
+  color: #d9ecff; /* Light blue for paragraph text */
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.hero-btn1 {
+  padding: 10px 30px;
+  font-size: 16px;
+  background: transparent;
+  color: #d9ecff; /* Light blue text */
+  border: 2px solid #d9ecff;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+.hero-btn1:hover {
+  background: #004080; /* Slightly lighter dark blue */
+  color: #ffffff; /* White text on hover */
+  border: 2px solid #004080;
+  transform: translateY(-5px);
+}
+
+/* Video Container with Special Hover Effects */
+.video-container {
+  position: relative;
+  margin: 20px auto;
+  border: 2px solid #66b3ff; /* Light blue border */
+  border-radius: 10px;
+  overflow: hidden; /* Hide any part of the image that overflows the container */
+  background-color: #001f3f; /* Dark blue background */
+  transition: 0.3s ease-in-out;
+  display: flex; /* Center the image within the container */
+  justify-content: center;
+  align-items: center;
+}
+
+.video-container:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
+  transform: translateY(-10px);
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 30px 0;
+  background: #001f3f; /* Dark blue background */
+  color: #d9ecff; /* Light blue text */
+}
+
+/* Box Pop-Up Effect for Vision and Mission Section */
+.popup-box {
+  background-color: #002a5c; /* Slightly lighter dark blue for contrast */
+  border: 1px solid #66b3ff; /* Light blue border */
+  padding: 20px;
+  margin: 20px auto;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5); /* Shadow for pop-up effect */
+  border-radius: 8px;
+  width: 80%;
+  max-width: 800px;
+  animation: popUp 0.5s ease-in-out;
+  color: #d9ecff; /* Light blue text */
+  transition: 0.3s ease-in-out;
+}
+
+.popup-box:hover {
+  transform: translateY(-10px);
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.7);
+}
+
+/* Headings inside the box */
+.popup-box h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #d9ecff; /* Light blue for headings */
+  font-weight: bold;
+}
+
+/* Paragraphs inside the box */
+.popup-box p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #d9ecff; /* Light blue text */
+}
+
+/* Pop-Up Animation */
+@keyframes popUp {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Navigation Bar Buttons */
+.nav-btn {
+  background: transparent;
+  border: 2px solid #d9ecff; /* Light blue border */
+  color: #d9ecff; /* Light blue text */
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  border-radius: 4px;
+}
+
+.nav-btn:hover {
+  background-color: #004080; /* Slightly lighter dark blue */
+  color: white;
+  border-color: #004080;
+  transform: translateY(-5px);
+}
+
+/* Ensure buttons align with other navigation links */
+.nav-links ul {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.ai-output {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
