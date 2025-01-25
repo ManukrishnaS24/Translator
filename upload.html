@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload - Sign Translator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header Section -->
+  <div class="header">
+    <nav>
+      <img src="logo.png" alt="Logo">
+      <div class="nav-links">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="text-box">
+      <h1>Upload Image</h1>
+      <p>Upload an image to translate signs into text using advanced AI technology.</p>
+    </div>
+  </div>
+
+  <!-- Upload Section (Top of the page) -->
+  <div class="upload-container">
+    <h2>Select an Image to Upload</h2>
+    <input type="file" id="upload-input" accept="image/*" hidden>
+    <button id="upload-btn" class="hero-btn1">Upload Image</button>
+    <div class="image-box">
+      <canvas id="upload-overlay"></canvas>
+      <img id="uploaded-image" style="display: none;" alt="Uploaded Image" />
+    </div>
+  </div>
+
+  <!-- Footer Section -->
+  <footer class="footer">
+    <p>Sign Translator &copy; 2025 | Powered by AI</p>
+  </footer>
+
+  <script>
+    // Upload image functionality
+    const uploadBtn = document.getElementById('upload-btn');
+    const uploadInput = document.getElementById('upload-input');
+    const uploadedImage = document.getElementById('uploaded-image');
+    const uploadOverlay = document.getElementById('upload-overlay');
+
+    uploadBtn.addEventListener('click', () => {
+      uploadInput.click(); // Trigger the file input click when the button is clicked
+    });
+
+    uploadInput.addEventListener('change', async (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        // Display the uploaded image locally
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          uploadedImage.src = e.target.result;
+          uploadedImage.style.display = 'block'; // Show uploaded image
+
+          // Resize and center the image in the box
+          const img = new Image();
+          img.src = e.target.result;
+          img.onload = function() {
+            // Resize image to fit within the container
+            const canvas = uploadOverlay;
+            const ctx = canvas.getContext('2d');
+            const maxWidth = canvas.width;
+            const maxHeight = canvas.height;
+
+            // Calculate the aspect ratio and resize accordingly
+            const aspectRatio = img.width / img.height;
+            let newWidth, newHeight;
+
+            if (img.width > img.height) {
+              newWidth = maxWidth;
+              newHeight = newWidth / aspectRatio;
+            } else {
+              newHeight = maxHeight;
+              newWidth = newHeight * aspectRatio;
+            }
+
+            // Center the image
+            const offsetX = (maxWidth - newWidth) / 2;
+            const offsetY = (maxHeight - newHeight) / 2;
+
+            // Set canvas size and draw the resized image
+            canvas.width = maxWidth;
+            canvas.height = maxHeight;
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
+            ctx.drawImage(img, offsetX, offsetY, newWidth, newHeight); // Draw image on canvas
+          };
+        };
+        reader.readAsDataURL(file);
+
+        // Send the file to the Flask backend
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+          const response = await fetch('http://127.0.0.1:5000/upload-image', {
+            method: 'POST',
+            body: formData,
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to upload image');
+          }
+
+          const result = await response.json();
+          alert(`Predicted Letter: ${result.predicted_letter}, Confidence: ${result.confidence}`);
+        } catch (error) {
+          console.error(error);
+          alert('An error occurred while uploading the image.');
+        }
+      }
+    });
+  </script>
+</body>
+</html>
